@@ -1,1 +1,1 @@
-# chess-Tutor
+# Chess-Tutor
