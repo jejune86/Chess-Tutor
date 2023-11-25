@@ -2,8 +2,7 @@ import copy
 import config
 import pygame
 import chess
-from chess_engine import set_engine_difficulty, get_best_move, get_game_state
-
+from chess_engine import set_engine_difficulty, get_best_move, get_game_state, move_analysis
 
 class ChessGame:
     def __init__(self, board, engine):
@@ -21,7 +20,8 @@ class ChessGame:
         self.captured_pieces = {'white': [], 'black': []}
         self.captured_pieces_history = [copy.deepcopy(self.captured_pieces)]
         self.win_probability_text = "Game in Progress"
-        self.baord_win_rate = [[50,50]]
+        self.baord_win_rate = [[0,0]]
+        self.move_analysis_text = "Game Start"
     
     def event_handle(self, event) :
         if event.type == pygame.QUIT:
@@ -61,7 +61,10 @@ class ChessGame:
         self.best_move = None
         self.captured_pieces = {'white': [], 'black': []}
         self.captured_pieces_history = [copy.deepcopy(self.captured_pieces)]
-        # 다른 상태들도 여기서 초기화...
+        self.move_anlysis_text = None
+        self.win_probability_text = "Game in Progress"
+        self.baord_win_rate = [[0,0]]
+        self.move_analysis_text = "Game Start"
 
 # 왼쪽 화살표를 눌렀을 때 이전 수로 되돌리기
     def keydown_Left(self):
@@ -70,7 +73,8 @@ class ChessGame:
             self.board = self.previous_board_states[self.current_state_index].copy()
             self.captured_pieces = self.captured_pieces_history[self.current_state_index].copy()
             self.last_move = self.last_moves[self.current_state_index - 1] if self.current_state_index > 0 else None
-
+            self.move_anlysis_text = move_analysis(self)
+            self.win_probability_text = get_game_state(self)
                 # 오른쪽 화살표 키를 눌렀을 때 다시 앞으로 진행
     def keydown_Right(self) :
         if self.current_state_index < len(self.previous_board_states) - 1:
@@ -78,6 +82,7 @@ class ChessGame:
             self.board = self.previous_board_states[self.current_state_index].copy()
             self.captured_pieces = self.captured_pieces_history[self.current_state_index].copy()
             self.last_move = self.last_moves[self.current_state_index - 1] if self.current_state_index > 0 else None
+            
 
     def keydown_Up(self):
     # 위 화살표를 누르면 난이도를 증가시킵니다.
@@ -125,6 +130,7 @@ class ChessGame:
                     
                 self.selected_square = None  # 선택 해제
                 self.best_move = None
+                self.move_anlysis_text = move_analysis(self)
                                 
             else:
                 piece = self.board.piece_at(clicked_square)
@@ -142,7 +148,7 @@ class ChessGame:
                 move_to_replay = self.last_moves[self.current_state_index]
                 self.board.push(move_to_replay)
                 self.last_move = move_to_replay
-                self.win_probability_text = get_game_state(self.board, self.engine, self.ai_difficulty)
+                self.win_probability_text = get_game_state(self)
                 self.previous_board_states[self.current_state_index] = self.board.copy()
                 self.captured_pieces_history[self.current_state_index] = copy.deepcopy(self.captured_pieces)
             else :
@@ -150,7 +156,7 @@ class ChessGame:
                 self.captured_piece = self.board.piece_at(result.move.to_square)
                 self.board.push(result.move)
                 self.last_move = result.move
-                self.win_probability_text = get_game_state(self.board,self.engine,self.ai_difficulty)
+                self.win_probability_text = get_game_state(self)
                 self.last_moves.append(self.last_move)
                 if self.captured_piece:
                 # 잡힌 기물의 색깔에 따라 리스트에 추가합니다.

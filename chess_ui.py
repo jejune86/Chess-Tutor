@@ -1,7 +1,7 @@
 import config
 import chess
 import pygame
-
+from chess_engine import move_analysis
 # 기물 이미지를 축소하는 함수
 def scale_piece_image(image, target_height):
     # 기물 이미지의 비율을 유지하면서 높이를 target_height에 맞게 조정합니다.
@@ -33,20 +33,20 @@ def draw_proffessor(screen) :
     screen.blit(config.tooltip_image, tooltip_rect)
     
     
-def write_texts(screen, font, win_probability_text, ai_difficulty) :
-    text_surface = font.render(win_probability_text, True, (0, 0, 0))
+def write_texts(screen, font, func) :
+    text_surface = font.render(func.win_probability_text, True, (0, 0, 0))
     text_surface_rect = text_surface.get_rect()
     text_surface_rect.topleft = (config.board_size + 10, 50)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
     screen.blit(text_surface, text_surface_rect)
     
-    difficulty_text = f"AI Difficulty: {ai_difficulty}"
+    difficulty_text = f"AI Difficulty: {func.ai_difficulty}"
     difficulty_surface = font.render(difficulty_text, True, (0, 0, 0))
     difficulty_surface_rect = difficulty_surface.get_rect()
     difficulty_surface_rect.topleft = (config.board_size + 10, 10)  # 승리 확률 정보 위에 난이도를 표시합니다.
     screen.blit(difficulty_surface, difficulty_surface_rect)
     
     
-def draw_board(screen, board, last_move, best_move, selected_square, selected_rect) :
+def draw_board(screen, func) :
     screen.fill((255, 255, 255))
     # 체스 보드 그리기
     screen.blit(config.board_image, (0, 40))
@@ -54,10 +54,10 @@ def draw_board(screen, board, last_move, best_move, selected_square, selected_re
     pygame.draw.rect(screen, (24,73,33), (0, config.screen_height - 40, config.board_size, 40))
     
     # 마지막 움직임을 하늘색으로 표시합니다.
-    if last_move :
+    if func.last_move :
         highlight_color = (135, 206, 250)  # 하늘색
-        start_square = last_move.from_square
-        end_square = last_move.to_square
+        start_square = func.last_move.from_square
+        end_square = func.last_move.to_square
         start_rect = pygame.Rect((start_square % 8) * config.square_size,
                                     (7 - start_square // 8) * config.square_size+40,
                                     config.square_size, config.square_size)
@@ -67,10 +67,10 @@ def draw_board(screen, board, last_move, best_move, selected_square, selected_re
         pygame.draw.rect(screen, highlight_color, start_rect)
         pygame.draw.rect(screen, highlight_color, end_rect)
     
-    if best_move:
+    if func.best_move:
         # 시작 위치와 목적지를 다른 색으로 강조합니다.
-        start_square = best_move.from_square
-        end_square = best_move.to_square
+        start_square = func.best_move.from_square
+        end_square = func.best_move.to_square
         start_rect = pygame.Rect((start_square % 8) * config.square_size,
                                     (7 - start_square // 8) * config.square_size+40,
                                     config.square_size, config.square_size)
@@ -80,13 +80,20 @@ def draw_board(screen, board, last_move, best_move, selected_square, selected_re
         pygame.draw.rect(screen, (0, 255, 0), start_rect)  # 시작 위치를 녹색으로 표시
         pygame.draw.rect(screen, (255, 0, 0), end_rect)  # 목적지를 빨간색으로 표시
     
-    if selected_square:
-        pygame.draw.rect(screen, (255,238,138), selected_rect)
+    if func.selected_square:
+        pygame.draw.rect(screen, (255,238,138), func.selected_rect)
         
     # 체스 기물 그리기
     for square in chess.SQUARES:
-        piece = board.piece_at(square)
+        piece = func.board.piece_at(square)
         if piece is not None:
             x = chess.square_file(square) * config.square_size
             y = (7 - chess.square_rank(square)) * config.square_size + 40
             screen.blit(config.piece_images[piece.symbol()], (x, y))
+
+
+def write_analysis(screen, font, func) :
+    text_surface = font.render(func.move_analysis_text, True, (0, 0, 0))
+    text_surface_rect = text_surface.get_rect()
+    text_surface_rect.topleft = (config.board_size + 15, 180)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
+    screen.blit(text_surface, text_surface_rect)
