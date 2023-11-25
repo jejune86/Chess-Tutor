@@ -21,5 +21,5 @@ piece_images = {
     'q': pygame.image.load("assets/images/black_queen.png"),  # 검은색 퀸
     'k': pygame.image.load("assets/images/black_king.png"),  # 검은색 킹
 }
-
-screen_width, screen_height = 960, 720 
+tooltip_image = pygame.image.load("assets/images/tooltip.png")
+screen_width, screen_height = 1000, 720 
