@@ -22,4 +22,5 @@ piece_images = {
     'k': pygame.image.load("assets/images/black_king.png"),  # 검은색 킹
 }
 tooltip_image = pygame.image.load("assets/images/tooltip.png")
+dr_image = pygame.image.load("assets/images/DrCat.png")
 screen_width, screen_height = 1000, 720 

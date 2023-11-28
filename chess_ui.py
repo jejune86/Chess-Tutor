@@ -29,8 +29,14 @@ def draw_captured_pieces(screen, captured_pieces, top_bottom_space, square_size)
 
 def draw_proffessor(screen) :
     tooltip_rect = config.tooltip_image.get_rect()
-    tooltip_rect.topleft = (config.board_size + 10, 150)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
+    tooltip_rect.topleft = (config.board_size + 10, 150)  
     screen.blit(config.tooltip_image, tooltip_rect)
+    
+    dr_rect = config.dr_image.get_rect()
+    dr_rect.topleft = (config.board_size + 100, 450)  
+    screen.blit(config.dr_image, dr_rect)
+    
+    
     
     
 def write_texts(screen, font, func) :
@@ -95,5 +101,5 @@ def draw_board(screen, func) :
 def write_analysis(screen, font, func) :
     text_surface = font.render(func.move_analysis_text, True, (0, 0, 0))
     text_surface_rect = text_surface.get_rect()
-    text_surface_rect.topleft = (config.board_size + 15, 180)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
+    text_surface_rect.topleft = (config.board_size + 40, 300)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
     screen.blit(text_surface, text_surface_rect)

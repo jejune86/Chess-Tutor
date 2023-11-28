@@ -1,7 +1,6 @@
 import pygame
 import chess
 import config
-import copy
 import chess_func
 from chess_engine import  STOCKFISH_PATH
 from chess_ui import draw_captured_pieces, write_texts, draw_proffessor, draw_board, write_analysis
@@ -20,7 +19,7 @@ with chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH) as engine:
     func = chess_func.ChessGame(chess.Board(),engine)    
     while func.chess_running:
         for event in pygame.event.get():
-            func.event_handle(event)  #키보드와 클릭 이벤트 다루기
+           func.event_handle(event)  #키보드와 클릭 이벤트 다루기
         # 화면 지우기
         draw_board(screen, func)
         # 승리 확률 정보 표시
