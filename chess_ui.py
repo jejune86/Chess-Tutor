@@ -99,7 +99,9 @@ def draw_board(screen, func) :
 
 
 def write_analysis(screen, font, func) :
-    text_surface = font.render(func.move_analysis_text, True, (0, 0, 0))
-    text_surface_rect = text_surface.get_rect()
-    text_surface_rect.topleft = (config.board_size + 40, 300)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
-    screen.blit(text_surface, text_surface_rect)
+    lines = func.move_analysis_text.split('\n')
+    y = 270
+    for line in lines:
+        text_surface = font.render(line, True, (0, 0, 0))
+        screen.blit(text_surface, (config.board_size+40, y))
+        y += text_surface.get_height() + 10

@@ -67,19 +67,13 @@ def move_analysis(func, prev_board, move):
     result = func.engine.play(prev_board, chess.engine.Limit(time=0.1))
     ai_move = result.move
     board_copy = prev_board.copy()
-    
-    # AI의 최적의 수 계산
-    random_num = random.randint(1, 3)
+
     # AI가 제안하는 최적의 움직임
 
     # 사용자의 움직임과 AI의 제안 비교
     if move == ai_move:
-        if random_num == 1:
-            return "Excellent move!, \n I would have done that too"
-        elif random_num == 2:
-            return "Great!, \n I would have done that too"
-        elif random_num == 3:
-            return "Excellent move, \n I would have done that too"
+        feedback = ["I would have done that too", "What a wonderful move!", "Brilliant!"]
+        return random.choice(feedback)
     else:
         # AI의 움직임으로 보드 복사본 업데이트
         board_copy.push(ai_move)
@@ -96,7 +90,17 @@ def move_analysis(func, prev_board, move):
         score_difference = score_after_user_move - score_after_ai_move
         func.engine.configure({"Skill Level": func.ai_difficulty})
         # 점수에 따라 피드백 제공
-        if score_difference >= 0:
-            return "Good move, \n but there might be a better option."
+
+        if score_difference > 50:
+            return "Good move!"
+        elif 20 < score_difference <= 50:
+            return "Decent move, \n there's other good moves too"
+        elif 5 < score_difference <= 20:
+            return "Acceptable, \n but it could make you vulenerable."
+        elif -20 <= score_difference <= 5:
+            return "Risky move. You should focus."
+        elif -50 <= score_difference < -20:
+            return "Dangerous move. \n This could jeopardize your game."
         else:
-            return "Consider a different strategy, \n there could be a better move."
+            return "Not recommended.\n This move leads you to defeat!"
+
