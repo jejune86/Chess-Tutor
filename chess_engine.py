@@ -2,13 +2,13 @@ import chess.engine
 import math
 import random
 
-STOCKFISH_PATH = "stockfish/stockfish-windows-x86-64-avx2.exe"
+STOCKFISH_PATH = "komodo-14\komodo-14_224afb\Windows\komodo-14.1-64bit.exe"
 
 # 현재 보드 상태를 기반으로 승리 확률 계산
 def calculate_win_probability(func):
-    func.engine.configure({"Skill Level": 20})
+    func.engine.configure({"Skill": 25})
     result = func.engine.analyse(func.board, chess.engine.Limit(time=0.3))
-    func.engine.configure({"Skill Level": func.ai_difficulty})
+    func.engine.configure({"Skill": func.ai_difficulty})
     if "score" in result:
         score = result["score"].relative.score()
         if score is not None:
@@ -22,20 +22,20 @@ def calculate_win_probability(func):
 # 난이도 조절 버튼을 눌렀을 때 호출될 함수를 정의합니다.
 def set_engine_difficulty(engine, level):
     try:
-        engine.configure({"Skill Level": level})
+        engine.configure({"Skill": level})
     except chess.engine.EngineTerminatedError :
         # 엔진이 종료된 경우, 다시 시작합니다.
         engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
-        engine.configure({"Skill Level": level})
+        engine.configure({"Skill": level})
     return engine
 
 def get_best_move(func):
     # 최적의 수 계산을 위해 임시로 엔진의 난이도를 최대로 설정합니다.
-    func.engine.configure({"Skill Level": 20})
+    func.engine.configure({"Skill": 25})
     result = func.engine.play(func.board, chess.engine.Limit(time=0.1))
     best_move = result.move
     # 계산이 끝난 후 원래 난이도로 되돌립니다.
-    func.engine.configure({"Skill Level": func.ai_difficulty})
+    func.engine.configure({"Skill": func.ai_difficulty})
     return best_move
 
 def get_game_state(func):
@@ -63,7 +63,7 @@ def get_game_state(func):
 
 def move_analysis(func, prev_board, move):
     # 보드의 복사본 생성
-    func.engine.configure({"Skill Level": 20})
+    func.engine.configure({"Skill": 25})
     result = func.engine.play(prev_board, chess.engine.Limit(time=0.1))
     ai_move = result.move
     board_copy = prev_board.copy()
@@ -88,7 +88,7 @@ def move_analysis(func, prev_board, move):
         score_after_user_move = info_after_user_move["score"].white().score() if info_after_user_move["score"].is_mate() is None else float('inf')
         # 점수 차이 계산
         score_difference = score_after_user_move - score_after_ai_move
-        func.engine.configure({"Skill Level": func.ai_difficulty})
+        func.engine.configure({"Skill": func.ai_difficulty})
         # 점수에 따라 피드백 제공
 
         if score_difference > 50:

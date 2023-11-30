@@ -39,17 +39,17 @@ def draw_proffessor(screen) :
     
     
     
-def write_texts(screen, font, func) :
-    text_surface = font.render(func.win_probability_text, True, (0, 0, 0))
-    text_surface_rect = text_surface.get_rect()
-    text_surface_rect.topleft = (config.board_size + 10, 50)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
-    screen.blit(text_surface, text_surface_rect)
-    
+def write_texts(screen, font, func) :  
     difficulty_text = f"AI Difficulty: {func.ai_difficulty}"
     difficulty_surface = font.render(difficulty_text, True, (0, 0, 0))
     difficulty_surface_rect = difficulty_surface.get_rect()
     difficulty_surface_rect.topleft = (config.board_size + 10, 10)  # 승리 확률 정보 위에 난이도를 표시합니다.
     screen.blit(difficulty_surface, difficulty_surface_rect)
+    
+    text_surface = font.render(func.win_probability_text, True, (0, 0, 0))
+    text_surface_rect = text_surface.get_rect()
+    text_surface_rect.topleft = (config.board_size + 10, 50)  # 승리 확률 정보를 추가 공간에 표시하는 위치 설정
+    screen.blit(text_surface, text_surface_rect)
     
     
 def draw_board(screen, func) :
