@@ -2,7 +2,7 @@ import pygame
 import chess
 import config
 import chess_func
-from chess_engine import  STOCKFISH_PATH
+from chess_engine import  KOMODO_PATH
 from chess_ui import draw_captured_pieces, write_texts, draw_proffessor, draw_board, write_analysis
 
 
@@ -15,12 +15,11 @@ screen = pygame.display.set_mode((config.screen_width, config.screen_height))
 pygame.display.set_caption("Chess Tutor")
 
 
-with chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH) as engine:
+with chess.engine.SimpleEngine.popen_uci(KOMODO_PATH) as engine:
     func = chess_func.ChessGame(chess.Board(),engine)    
     while func.chess_running:
         for event in pygame.event.get():
-           func.event_handle(event)  #키보드와 클릭 이벤트 다루기
-        # 화면 지우기
+           func.event_handle(event)  #키보드와 클릭 이벤트 다루기 
         draw_board(screen, func)
         # 승리 확률 정보 표시
         write_texts(screen,font,func)
@@ -31,7 +30,7 @@ with chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH) as engine:
 
         # AI 움직임 계산 및 수행
         func.ai_movement()
-            
+               
             
 
                 

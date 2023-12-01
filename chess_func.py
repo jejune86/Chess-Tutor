@@ -23,15 +23,16 @@ class ChessGame:
         self.baord_win_rate = [[0,0]]
         self.move_analysis_text = "Game Start"
         self.undo = False
+        self.promotion = False
+        self.promo_move = None
     
     def event_handle(self, event) :
         if event.type == pygame.QUIT:
             self.chess_running = False
             
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            # 마우스 클릭 위치를 체스 보드 좌표로 변환
             self.click()
-                    
+            
         elif event.type == pygame.KEYDOWN:
             # 'r' 키를 눌렀을 때 체스 보드 초기화
             if event.key == pygame.K_r:
@@ -107,15 +108,39 @@ class ChessGame:
 
     def click(self):
         x, y = pygame.mouse.get_pos()
+
+        if self.promotion:
+            prev_board = self.board.copy() 
+            piece_type = self.handle_promotion_click(x, y)
+            if piece_type is not None:
+                self.promo_move.promotion = piece_type
+                move = self.promo_move
+                self.captured_piece = self.board.piece_at(move.to_square)
+                self.board.push(move)  
+                if self.captured_piece:
+                    if self.captured_piece.color == chess.WHITE:
+                        self.captured_pieces['black'].append(self.captured_piece)
+                    else:
+                        self.captured_pieces['white'].append(self.captured_piece)
+                self.move_analysis_text = move_analysis(self, prev_board, move)
+                self.undo = False
+                self.selected_rect = None
+                self.selected_square = None  # 선택 해제
+                self.best_move = None
+                self.promotion = False
+                self.promo_move = None
+                return 
+            
         if x < config.board_size and y >= 40 and y < config.board_size + 40:
             prev_board = self.board.copy()    #평가를 위해 현재 보드 상태 저장
             file = x // config.square_size
-            rank = 7 - (y - 40) // config.square_size  # 좌표를 체스 보드에 맞게 반전
-
+            rank = 7 - (y - 40) // config.square_size  
+            
             clicked_square = chess.square(file, rank)
             piece = self.board.piece_at(clicked_square)
+            
             if piece is not None and piece.color == self.board.turn:
-                if self.selected_square != clicked_square:
+                if self.selected_square is None or self.selected_square != clicked_square:
                     # 다른 기물 선택 시 색상 업데이트
                     self.selected_square = clicked_square
                     self.selected_rect = pygame.Rect((file * config.square_size),
@@ -124,10 +149,18 @@ class ChessGame:
                                                 config.square_size)
                 else:
                     self.selected_square = None  # 같은 말을 다시 클릭한 경우 선택 해제
+                    self.selected_rect = None
                     
             elif self.selected_square is not None:
                 move = chess.Move(self.selected_square, clicked_square)
-                if move in self.board.legal_moves:
+                p_move = chess.Move(self.selected_square, clicked_square,chess.QUEEN)
+                
+                if p_move in self.board.legal_moves :
+                    self.promotion = True
+                    self.promo_move = move
+                    return
+                
+                if move in self.board.legal_moves :
                     self.captured_piece = self.board.piece_at(move.to_square)
                     self.board.push(move)  # 보드 업데이트
 
@@ -138,11 +171,12 @@ class ChessGame:
                             self.captured_pieces['white'].append(self.captured_piece)
                     self.move_analysis_text = move_analysis(self, prev_board, move)
                     self.undo = False
-                    
+
+                                        
                 self.selected_square = None  # 선택 해제
                 self.best_move = None
                 
-                                
+                
             else:
                 piece = self.board.piece_at(clicked_square)
                 if piece is not None and piece.color == self.board.turn:
@@ -151,7 +185,10 @@ class ChessGame:
                                                 ((7 - rank) * config.square_size) + 40,
                                                 config.square_size,
                                                 config.square_size)
-                    
+    
+
+            
+                      
     def ai_movement(self) :
         if not self.board.is_game_over() and self.board.turn == chess.BLACK:
             if self.undo:
@@ -181,4 +218,24 @@ class ChessGame:
                 self.captured_pieces_history = self.captured_pieces_history[:self.current_state_index+1]
                 self.captured_pieces_history.append(copy.deepcopy(self.captured_pieces))
             self.current_state_index += 1                
-        
+   
+
+
+    def handle_promotion_click(self, x, y):
+        dialog_width, dialog_height = 340, 100
+        dialog_x = (config.board_size - dialog_width) // 2
+        dialog_y = (config.screen_height - dialog_height) // 2
+        piece_size = dialog_height
+
+        if dialog_x <= x <= dialog_x + dialog_width and dialog_y <= y <= dialog_y + dialog_height:
+            relative_x = x - dialog_x
+            if 0 <= relative_x < piece_size:
+                return chess.ROOK
+            elif piece_size <= relative_x < 2 * piece_size:
+                return chess.KNIGHT
+            elif 2 * piece_size <= relative_x < 3 * piece_size:
+                return chess.BISHOP
+            elif 3 * piece_size <= relative_x < 4 * piece_size:
+                return chess.QUEEN
+
+        return None  

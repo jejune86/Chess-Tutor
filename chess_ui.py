@@ -86,8 +86,12 @@ def draw_board(screen, func) :
         pygame.draw.rect(screen, (0, 255, 0), start_rect)  # 시작 위치를 녹색으로 표시
         pygame.draw.rect(screen, (255, 0, 0), end_rect)  # 목적지를 빨간색으로 표시
     
-    if func.selected_square:
+    
+    if func.selected_square is not None and func.selected_rect is not None: #선택 부분 그리기
         pygame.draw.rect(screen, (255,238,138), func.selected_rect)
+
+    if func.promotion:
+        draw_promotion_dialog(screen)
         
     # 체스 기물 그리기
     for square in chess.SQUARES:
@@ -100,8 +104,35 @@ def draw_board(screen, func) :
 
 def write_analysis(screen, font, func) :
     lines = func.move_analysis_text.split('\n')
-    y = 270
+    y = 240
     for line in lines:
         text_surface = font.render(line, True, (0, 0, 0))
         screen.blit(text_surface, (config.board_size+40, y))
         y += text_surface.get_height() + 10
+        
+def draw_promotion_dialog(screen):
+    # 중앙에 위치할 대화 상자의 좌표와 크기 설정
+    dialog_width, dialog_height = 340, 100
+    dialog_x = (config.board_size - dialog_width) // 2
+    dialog_y = (config.screen_height - dialog_height) // 2
+
+    # 반투명 흰색 배경 그리기
+    dialog_background = pygame.Surface((dialog_width, dialog_height))
+    dialog_background.set_alpha(180)  # 반투명도 설정
+    dialog_background.fill((255, 255, 255))  # 흰색
+    screen.blit(dialog_background, (dialog_x, dialog_y))
+
+    # 각 기물의 이미지와 위치 설정
+    pieces = [chess.ROOK, chess.KNIGHT, chess.BISHOP, chess.QUEEN]
+    piece_size = dialog_height  # 말의 크기를 대화 상자 높이에 맞춤
+    x_offset = dialog_x + (dialog_width - piece_size * len(pieces)) // 2
+    y_offset = dialog_y
+
+    for i, piece in enumerate(pieces):
+        # 말의 이미지를 얻고 크기 조정
+        piece_image = config.piece_images[chess.Piece(piece, chess.WHITE).symbol()]
+        piece_image = pygame.transform.scale(piece_image, (piece_size, piece_size))
+        
+        # 말의 이미지를 화면에 그림
+        screen.blit(piece_image, (x_offset + i * piece_size, y_offset))
+
