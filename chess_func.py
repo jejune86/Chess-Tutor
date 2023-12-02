@@ -19,12 +19,12 @@ class ChessGame:
         self.best_move = None
         self.captured_pieces = {'white': [], 'black': []}
         self.captured_pieces_history = [copy.deepcopy(self.captured_pieces)]
-        self.win_probability_text = "Game in Progress"
-        self.baord_win_rate = [[0,0]]
+        self.win_probability_text = ""
         self.move_analysis_text = "Game Start"
         self.undo = False
         self.promotion = False
         self.promo_move = None
+        self.board_analysis = None
     
     def event_handle(self, event) :
         if event.type == pygame.QUIT:
@@ -68,17 +68,29 @@ class ChessGame:
         self.captured_pieces_history = [copy.deepcopy(self.captured_pieces)]
         self.move_analysis_text = None
         self.win_probability_text = "Game in Progress"
-        self.baord_win_rate = [[0,0]]
         self.move_analysis_text = "Game Start"
         self.undo = False
+        self.promotion = False
+        self.promo_move = None
+        self.board_analysis = None
 
 # 왼쪽 화살표를 눌렀을 때 이전 수로 되돌리기
     def keydown_Left(self):
-        if self.current_state_index > 0:
+        if self.board.is_game_over() :
+            self.board = self.previous_board_states[self.current_state_index].copy()
+            self.captured_pieces = self.captured_pieces_history[self.current_state_index].copy()
+            self.last_move = self.last_moves[self.current_state_index - 1] if self.current_state_index > 0 else None
+            self.get_analysis()
+            self.win_probability_text = get_game_state(self)
+            self.best_move = None
+            self.undo = True 
+            
+        elif self.current_state_index > 0:
             self.current_state_index -= 1
             self.board = self.previous_board_states[self.current_state_index].copy()
             self.captured_pieces = self.captured_pieces_history[self.current_state_index].copy()
             self.last_move = self.last_moves[self.current_state_index - 1] if self.current_state_index > 0 else None
+            self.get_analysis()
             self.win_probability_text = get_game_state(self)
             self.best_move = None
             self.undo = True
@@ -90,6 +102,7 @@ class ChessGame:
             self.captured_pieces = self.captured_pieces_history[self.current_state_index].copy()
             self.last_move = self.last_moves[self.current_state_index - 1] if self.current_state_index > 0 else None
             self.best_move = None
+            self.get_analysis()
             self.win_probability_text = get_game_state(self)
 
     def keydown_Up(self):
@@ -122,6 +135,8 @@ class ChessGame:
                         self.captured_pieces['black'].append(self.captured_piece)
                     else:
                         self.captured_pieces['white'].append(self.captured_piece)
+                        
+                self.get_analysis()
                 self.move_analysis_text = move_analysis(self, prev_board, move)
                 self.undo = False
                 self.selected_rect = None
@@ -129,6 +144,7 @@ class ChessGame:
                 self.best_move = None
                 self.promotion = False
                 self.promo_move = None
+                self.win_probability_text = get_game_state(self)
                 return 
             
         if x < config.board_size and y >= 40 and y < config.board_size + 40:
@@ -162,14 +178,15 @@ class ChessGame:
                 
                 if move in self.board.legal_moves :
                     self.captured_piece = self.board.piece_at(move.to_square)
-                    self.board.push(move)  # 보드 업데이트
-
                     if self.captured_piece:
                         if self.captured_piece.color == chess.WHITE:
                             self.captured_pieces['black'].append(self.captured_piece)
                         else:
                             self.captured_pieces['white'].append(self.captured_piece)
+                    self.board.push(move)  # 보드 업데이트
+                    self.get_analysis()
                     self.move_analysis_text = move_analysis(self, prev_board, move)
+                    self.win_probability_text = get_game_state(self)
                     self.undo = False
 
                                         
@@ -196,14 +213,14 @@ class ChessGame:
                 move_to_replay = self.last_moves[self.current_state_index-1]
                 self.board.push(move_to_replay)
                 self.last_move = move_to_replay
+                self.get_analysis()
                 self.win_probability_text = get_game_state(self)
-                #self.previous_board_states[self.current_state_index] = self.board.copy()
-                #self.captured_pieces_history[self.current_state_index] = copy.deepcopy(self.captured_pieces)
             else :
                 result = self.engine.play(self.board, chess.engine.Limit(time=0.1))
                 self.captured_piece = self.board.piece_at(result.move.to_square)
                 self.board.push(result.move)
                 self.last_move = result.move
+                self.get_analysis()
                 self.win_probability_text = get_game_state(self)
                 self.last_moves = self.last_moves[:self.current_state_index]
                 self.last_moves.append(self.last_move)
@@ -216,9 +233,26 @@ class ChessGame:
                 self.previous_board_states = self.previous_board_states[:self.current_state_index+1]
                 self.previous_board_states.append(self.board.copy())
                 self.captured_pieces_history = self.captured_pieces_history[:self.current_state_index+1]
-                self.captured_pieces_history.append(copy.deepcopy(self.captured_pieces))
-            self.current_state_index += 1                
-   
+                self.captured_pieces_history.append(copy.deepcopy(self.captured_pieces)) 
+            
+            if self.board.is_game_over() :
+                if self.board.is_checkmate() :
+                    if self.board.turn:
+                        self.move_analysis_text = "Checkmate. \nTry again..."
+                    else:
+                        self.move_analysis_text = "Checkmate! \nYou win!!"
+                elif self.board.is_stalemate():
+                    self.move_analysis_text = "Stalemate, Draw!"
+                elif self.board.is_insufficient_material():
+                    self.move_analysis_text = "Draw!"
+                elif self.board.is_seventyfive_moves():
+                    self.move_analysis_text = "Draw!"
+                elif self.board.is_fivefold_repetition():
+                    self.move_analysis_text = "Draw!"
+                elif self.board.can_claim_draw():
+                    self.move_analysis_text = "Draw!"             
+            else :
+                self.current_state_index += 1  
 
 
     def handle_promotion_click(self, x, y):
@@ -239,3 +273,11 @@ class ChessGame:
                 return chess.QUEEN
 
         return None  
+    
+    def get_analysis(self) :
+        self.engine.configure({"Skill": 25})
+        self.board_analysis = self.engine.analyse(self.board, chess.engine.Limit(time=0.1))
+        self.engine.configure({"Skill": self.ai_difficulty})
+        
+        
+        

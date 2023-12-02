@@ -29,7 +29,7 @@ def draw_captured_pieces(screen, captured_pieces, top_bottom_space, square_size)
 
 def draw_proffessor(screen) :
     tooltip_rect = config.tooltip_image.get_rect()
-    tooltip_rect.topleft = (config.board_size + 10, 150)  
+    tooltip_rect.topleft = (config.board_size + 10, 140)  
     screen.blit(config.tooltip_image, tooltip_rect)
     
     dr_rect = config.dr_image.get_rect()
@@ -90,9 +90,6 @@ def draw_board(screen, func) :
     if func.selected_square is not None and func.selected_rect is not None: #선택 부분 그리기
         pygame.draw.rect(screen, (255,238,138), func.selected_rect)
 
-    if func.promotion:
-        draw_promotion_dialog(screen)
-        
     # 체스 기물 그리기
     for square in chess.SQUARES:
         piece = func.board.piece_at(square)
@@ -100,7 +97,11 @@ def draw_board(screen, func) :
             x = chess.square_file(square) * config.square_size
             y = (7 - chess.square_rank(square)) * config.square_size + 40
             screen.blit(config.piece_images[piece.symbol()], (x, y))
-
+            
+    if func.promotion:
+        draw_promotion_dialog(screen)
+        
+        
 
 def write_analysis(screen, font, func) :
     lines = func.move_analysis_text.split('\n')
@@ -123,16 +124,14 @@ def draw_promotion_dialog(screen):
     screen.blit(dialog_background, (dialog_x, dialog_y))
 
     # 각 기물의 이미지와 위치 설정
-    pieces = [chess.ROOK, chess.KNIGHT, chess.BISHOP, chess.QUEEN]
-    piece_size = dialog_height  # 말의 크기를 대화 상자 높이에 맞춤
-    x_offset = dialog_x + (dialog_width - piece_size * len(pieces)) // 2
-    y_offset = dialog_y
+    pieces = ['R', 'N', 'B', 'Q']
+
+    x_offset = dialog_x + 10
+    y_offset = dialog_y + 10
 
     for i, piece in enumerate(pieces):
-        # 말의 이미지를 얻고 크기 조정
-        piece_image = config.piece_images[chess.Piece(piece, chess.WHITE).symbol()]
-        piece_image = pygame.transform.scale(piece_image, (piece_size, piece_size))
+
         
         # 말의 이미지를 화면에 그림
-        screen.blit(piece_image, (x_offset + i * piece_size, y_offset))
+        screen.blit(config.piece_images[piece], (x_offset + i * 80, y_offset))
 
