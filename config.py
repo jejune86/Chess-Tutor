@@ -1,26 +1,34 @@
 import pygame
-
+pygame.init()
+pygame.mixer.init()
+font = pygame.font.SysFont("sans-serif", 30)
+screen_width, screen_height = 1000, 720 
 board_size = 640
 square_size = 80
 top_bottom_space = 40
 
-  # 이전 체스 보드 상태를 저장하는 리스트
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Chess Tutor")
+
+
 
 board_image = pygame.image.load("assets/images/chessboard.png")
 piece_images = {
-    'P': pygame.image.load("assets/images/white_pawn.png"),  # 흰색 폰
-    'R': pygame.image.load("assets/images/white_rook.png"),  # 흰색 룩
-    'N': pygame.image.load("assets/images/white_knight.png"),  # 흰색 나이트
-    'B': pygame.image.load("assets/images/white_bishop.png"),  # 흰색 비숍
-    'Q': pygame.image.load("assets/images/white_queen.png"),  # 흰색 퀸
-    'K': pygame.image.load("assets/images/white_king.png"),  # 흰색 킹
-    'p': pygame.image.load("assets/images/black_pawn.png"),  # 검은색 폰
-    'r': pygame.image.load("assets/images/black_rook.png"),  # 검은색 룩
-    'n': pygame.image.load("assets/images/black_knight.png"),  # 검은색 나이트
-    'b': pygame.image.load("assets/images/black_bishop.png"),  # 검은색 비숍
-    'q': pygame.image.load("assets/images/black_queen.png"),  # 검은색 퀸
-    'k': pygame.image.load("assets/images/black_king.png"),  # 검은색 킹
+    'P': pygame.image.load("assets/images/white_pawn.png"),  
+    'R': pygame.image.load("assets/images/white_rook.png"), 
+    'N': pygame.image.load("assets/images/white_knight.png"),  
+    'B': pygame.image.load("assets/images/white_bishop.png"),  
+    'Q': pygame.image.load("assets/images/white_queen.png"), 
+    'K': pygame.image.load("assets/images/white_king.png"),  
+    'p': pygame.image.load("assets/images/black_pawn.png"),  
+    'r': pygame.image.load("assets/images/black_rook.png"),  
+    'n': pygame.image.load("assets/images/black_knight.png"),  
+    'b': pygame.image.load("assets/images/black_bishop.png"),  
+    'q': pygame.image.load("assets/images/black_queen.png"),  
+    'k': pygame.image.load("assets/images/black_king.png"),  
 }
 tooltip_image = pygame.image.load("assets/images/tooltip.png")
 dr_image = pygame.image.load("assets/images/DrCat.png")
-screen_width, screen_height = 1000, 720 
+
+
+move_sound = pygame.mixer.Sound('assets/sound/move.wav')
