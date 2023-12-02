@@ -61,7 +61,7 @@ def draw_board(screen, func) :
     
     # 마지막 움직임을 하늘색으로 표시합니다.
     if func.last_move :
-        highlight_color = (135, 206, 250)  # 하늘색
+        highlight_color = (129, 211, 235)  # 하늘색
         start_square = func.last_move.from_square
         end_square = func.last_move.to_square
         start_rect = pygame.Rect((start_square % 8) * config.square_size,
@@ -83,12 +83,12 @@ def draw_board(screen, func) :
         end_rect = pygame.Rect((end_square % 8) * config.square_size,
                                 (7 - end_square // 8) * config.square_size+40,
                                 config.square_size, config.square_size)
-        pygame.draw.rect(screen, (0, 255, 0), start_rect)  # 시작 위치를 녹색으로 표시
-        pygame.draw.rect(screen, (255, 0, 0), end_rect)  # 목적지를 빨간색으로 표시
+        pygame.draw.rect(screen, (128, 180, 99), start_rect)  # 시작 위치를 녹색으로 표시
+        pygame.draw.rect(screen, (239, 64, 74), end_rect)  # 목적지를 빨간색으로 표시
     
     
     if func.selected_square is not None and func.selected_rect is not None: #선택 부분 그리기
-        pygame.draw.rect(screen, (255,238,138), func.selected_rect)
+        pygame.draw.rect(screen, (255,204,78), func.selected_rect)
 
     # 체스 기물 그리기
     for square in chess.SQUARES:

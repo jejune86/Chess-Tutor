@@ -124,7 +124,7 @@ def move_analysis(func, prev_board, move):
         func.engine.configure({"Skill": func.ai_difficulty})
 
         if ai_score is not None and  player_score is not None :
-            score_diff = ai_score - player_score
+            score_diff = player_score - ai_score
             return generate_feedback(score_diff)
         else :
             return "Hmm.. That's wierd."
@@ -134,7 +134,7 @@ def generate_feedback(score_difference):
     if score_difference >= 150:
         return "Outstanding move! \nYou've mastered this situation."
     elif 100 <= score_difference < 150:
-        return "Excellent move. \nSignificantly better than the AI's suggestion."
+        return "Excellent move. \nSignificantly better than \nthe AI's suggestion."
     elif 50 <= score_difference < 100:
         return "Very good move. \nYou have a clear advantage."
     elif 20 <= score_difference < 50:
