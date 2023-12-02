@@ -109,8 +109,11 @@ def move_analysis(func, prev_board, move):
     else:
         board_copy_after_ai_move = prev_board.copy()
         board_copy_after_ai_move.push(ai_move)
-        ai_score = func.engine.analyse(board_copy_after_ai_move, chess.engine.Limit(time=0.1))['score'].white().score(mate_score=100000)
-        func.engine.configure({"Skill": func.ai_difficulty})
+        try:
+            ai_score = func.engine.analyse(board_copy_after_ai_move, chess.engine.Limit(time=0.1))['score'].white().score(mate_score=100000)
+        except KeyError:
+            # 'score' 키가 없을 때 처리할 로직
+            return "Unable to calculate score."
 
         if ai_score is not None and  player_score is not None :
             score_diff = player_score - ai_score
