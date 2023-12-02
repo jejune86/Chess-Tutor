@@ -36,6 +36,8 @@ pip install pygame
 
 If you don't know the basic rule of chess [Click Here](https://en.wikipedia.org/wiki/Rules_of_chess)
 
+Run main.py to play
+
 Click your piece and click the other place to move your piece
 
 keyboard input
