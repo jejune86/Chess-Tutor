@@ -6,7 +6,7 @@ For chess newbies, Chess-tutor can assist you to play chess. Learning by playing
 
 ## Introduction
 
-Chessgame against AI. On the right side of screen, it displays win rate of current board ang gives you a feedback about your move. You can get optimal move by AI by pressing Space bar. If you play wrong, you can undo/redo move. There are 25 level of AI difficulty. If it is too hard or easy, adjust Ai difficulty.
+Chessgame against AI. It uses python chess and pygame library. On the right side of screen, it displays win rate of current board ang gives you a feedback about your move. You can get optimal move by AI by pressing Space bar. If you play wrong, you can undo/redo move. There are 25 level of AI difficulty. If it is too hard or easy, adjust Ai difficulty.
 
 
 ## Getting Started
@@ -60,3 +60,5 @@ Down key : Decrease Ai difficulty
 <img src="assets\images_for_readme\promotion.png">
 <img src="assets\images_for_readme\checkmate.png">
 
+## Licence
+Chess-Tutor is licensed under the GPL 3 - see the [LICENSE.md](LICENSE.md) file for details.
