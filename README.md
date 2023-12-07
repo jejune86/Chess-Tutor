@@ -6,7 +6,7 @@ For chess newbies, Chess-tutor can assist you to play chess. Learning by playing
 
 ## Introduction
 
-Chessgame against AI. It uses python chess and pygame library. On the right side of screen, it displays win rate of current board ang gives you a feedback about your move. You can get optimal move by AI by pressing Space bar. If you play wrong, you can undo/redo move. There are 25 levels of AI difficulty. If it is too hard or easy, adjust Ai difficulty.
+Chessgame against AI. It uses python chess and pygame library.On the right side of screen, it displays win rate of current board ang gives you a feedback about your move. You can get optimal move by AI by pressing Space bar. If you play wrong, you can undo/redo move. There are 25 levels of AI difficulty. If it is too hard or easy, adjust Ai difficulty.
 
 
 ## Getting Started
@@ -32,6 +32,7 @@ pip install pygame
 
     <img src="assets\images_for_readme\komodo_location.png">
 
+    (if you are using ios or having problem with it, go chess_engine.py and change path)
 ## How to play 
 
 If you don't know the basic rule of chess [Click Here](https://en.wikipedia.org/wiki/Rules_of_chess)
