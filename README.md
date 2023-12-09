@@ -4,17 +4,39 @@ For chess newbies, Chess-tutor can assist you to play chess. Learning by playing
 
 <img src="assets\images_for_readme\screen.png">
 
+## Contents
+- [Chess-Tutor](#chess-tutor)
+  - [Contents](#contents)
+  - [Introduction](#introduction)
+  - [Prerequisite](#prerequisite)
+  - [How to play](#how-to-play)
+    - [Keyboard input](#keyboard-input)
+  - [Details](#details)
+    - [Board Information](#board-information)
+    - [Screen for Inforamtions](#screen-for-inforamtions)
+    - [Feedback](#feedback)
+    - [Promotion](#promotion)
+  - [Example Images](#example-images)
+  - [References](#references)
+  - [Licence](#licence)
+---
+
 ## Introduction
 
-Chessgame against AI. It uses python chess and pygame library.On the right side of screen, it displays win rate of current board ang gives you a feedback about your move. You can get optimal move by AI by pressing Space bar. If you play wrong, you can undo/redo move. There are 25 levels of AI difficulty. If it is too hard or easy, adjust Ai difficulty.
+Chessgame against AI. It uses python chess and pygame library.
+
+On the right side of screen, it displays win rate of current board ang gives you a feedback about your move.
+
+You can get optimal move by AI by pressing Space bar. If you play wrong, you can undo/redo move.
+
+There are levels of AI difficulty from 0 to 25. If it is too hard or easy, adjust Ai difficulty.
 
 
-## Getting Started
+## Prerequisite
 
 You have to install python chess and pygame, komodo engine (chess engine)
 (you can use other engines but, you have to change some codes)
 
-### Prerequisites
 
 1. Library
 ```sh
@@ -24,24 +46,23 @@ pip install pygame
 
 2. Download komodo engine
    
-    go to this site https://komodochess.com/
-
-    and download komodo 14
+    go to this site https://komodochess.com/ and download komodo 14
 
     unzip it and put it in CHESS-TUTOR FILE
 
     <img src="assets\images_for_readme\komodo_location.png">
 
-    (if you are not using windows or having problem with it, go chess_engine.py and change path)
+    (If you are not using windows or having problem with it, go `chess_engine.py` and change path)
+
 ## How to play 
 
 If you don't know the basic rule of chess [Click Here](https://en.wikipedia.org/wiki/Rules_of_chess)
 
-Run main.py to play
+Run `main.py` to play
 
-Click your piece and click the other place to move your piece
+**Click your piece and click the other place to move your piece**
 
-keyboard input
+### Keyboard input
 
 Q : Quit the game
 
@@ -61,7 +82,6 @@ Down key : Decrease AI difficulty
 
 ### Board Information 
 
-Each color means below.
 
 Selected piece : <img src="assets\images_for_readme\selected.png">
 
@@ -72,16 +92,24 @@ Optimal move by AI : <img src="assets\images_for_readme\spacebar.png">
 
 
 
-On the top and bottom of board, it shows pieces you and your oppenent capture.
+On the top and bottom of the board, it shows pieces captured pieces.
 
 <img src="assets\images_for_readme\captured_piece.png">
 
 
 ### Screen for Inforamtions
 
-<img src="assets\images_for_readme\informations.png">
+<img src="assets\images_for_readme\information.png">
 
-It show AI Difficulty, Win rate on current board, Feedback and cute kitty chess master.
+It shows AI Difficulty, Win rate on current board, Feedback and cute kitty chess master.
+
+### Feedback
+**The kitty master analyses your move and gives you feedback about the move.**
+
+Even if the win rate is increased, the feedback could be bad. Because your opponent can make mistake.
+
+If there's the way you or your opponent can make forced checkmate,
+It tells you, the number of moves to checkmate.
 
 ### Promotion
 
@@ -95,6 +123,10 @@ Click one you want.
 <img src="assets\images_for_readme\Running_example.png">
 <img src="assets\images_for_readme\promotion.png">
 <img src="assets\images_for_readme\checkmate.png">
+
+## References
+- [Github python-chess](https://github.com/niklasf/python-chess)
+- ChatGPT 4.0
 
 ## Licence
 Chess-Tutor is licensed under the GPL 3 - see the [LICENSE.md](LICENSE.md) file for details.
