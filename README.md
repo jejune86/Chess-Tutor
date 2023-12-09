@@ -62,23 +62,31 @@ Down key : Decrease AI difficulty
 ### Board Information 
 
 Each color means below.
+
 Selected piece : <img src="assets\images_for_readme\selected.png">
 
 Opponent's last move : <img src="assets\images_for_readme\last_move.png">
 
 Optimal move by AI : <img src="assets\images_for_readme\spacebar.png">
 
-<img src="assets\images_for_readme\captured_piece.png">
+
+
+
 On the top and bottom of board, it shows pieces you and your oppenent capture.
+
+<img src="assets\images_for_readme\captured_piece.png">
+
 
 ### Screen for Inforamtions
 
 <img src="assets\images_for_readme\informations.png">
+
 It show AI Difficulty, Win rate on current board, Feedback and cute kitty chess master.
 
 ### Promotion
 
 <img src="assets\images_for_readme\promotion_screen.png">
+
 If your pawn reaches at the end, you can promte your pawn to rock, knight, bishop or queen.
 Click one you want.
 
