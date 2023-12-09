@@ -32,7 +32,7 @@ pip install pygame
 
     <img src="assets\images_for_readme\komodo_location.png">
 
-    (if you are using ios or having problem with it, go chess_engine.py and change path)
+    (if you are not using windows or having problem with it, go chess_engine.py and change path)
 ## How to play 
 
 If you don't know the basic rule of chess [Click Here](https://en.wikipedia.org/wiki/Rules_of_chess)
@@ -53,9 +53,34 @@ Left Key : Undo move
 
 Right Key : Redo move
 
-Up key : Increase Ai difficulty
+Up key : Increase AI difficulty
 
-Down key : Decrease Ai difficulty
+Down key : Decrease AI difficulty
+
+## Details
+
+### Board Information 
+
+Each color means below.
+Selected piece : <img src="assets\images_for_readme\selected.png">
+
+Opponent's last move : <img src="assets\images_for_readme\last_move.png">
+
+Optimal move by AI : <img src="assets\images_for_readme\spacebar.png">
+
+<img src="assets\images_for_readme\captured_piece.png">
+On the top and bottom of board, it shows pieces you and your oppenent capture.
+
+### Screen for Inforamtions
+
+<img src="assets\images_for_readme\informations.png">
+It show AI Difficulty, Win rate on current board, Feedback and cute kitty chess master.
+
+### Promotion
+
+<img src="assets\images_for_readme\promotion_screen.png">
+If your pawn reaches at the end, you can promte your pawn to rock, knight, bishop or queen.
+Click one you want.
 
 ## Example Images
 
