@@ -13,7 +13,7 @@ For chess newbies, Chess-tutor can assist you to play chess. Learning by playing
     - [Keyboard input](#keyboard-input)
   - [Details](#details)
     - [Board Information](#board-information)
-    - [Screen for Inforamtions](#screen-for-inforamtions)
+    - [Screen for Inforamtion](#screen-for-inforamtion)
     - [Feedback](#feedback)
     - [Promotion](#promotion)
   - [Example Images](#example-images)
@@ -27,7 +27,7 @@ Chessgame against AI. It uses python chess and pygame library.
 
 On the right side of screen, it displays win rate of current board ang gives you a feedback about your move.
 
-You can get optimal move by AI by pressing Space bar. If you play wrong, you can undo/redo move.
+You can get optimal move by AI by pressing Space bar. If you played wrong, you can undo/redo move.
 
 There are levels of AI difficulty from 0 to 25. If it is too hard or easy, adjust Ai difficulty.
 
@@ -97,7 +97,7 @@ On the top and bottom of the board, it shows pieces captured pieces.
 <img src="assets\images_for_readme\captured_piece.png">
 
 
-### Screen for Inforamtions
+### Screen for Inforamtion
 
 <img src="assets\images_for_readme\information.png">
 
@@ -109,7 +109,7 @@ It shows AI Difficulty, Win rate on current board, Feedback and cute kitty chess
 Even if the win rate is increased, the feedback could be bad. Because your opponent can make mistake.
 
 If there's the way you or your opponent can make forced checkmate,
-It tells you, the number of moves to checkmate.
+It tells you the number of moves to checkmate.
 
 ### Promotion
 
